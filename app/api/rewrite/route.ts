@@ -37,6 +37,29 @@ Return ONLY valid JSON with exactly these fields:
   "rewritten": "the full polished email body",
   "shorter": "a concise version of the same email in 2-3 sentences maximum"
 }`
+  } else if (type === 'reply') {
+    const { thread, answers } = body
+    if (!thread?.trim()) {
+      return NextResponse.json({ error: 'Please paste the email you want to reply to.' }, { status: 400 })
+    }
+    const answersText = Array.isArray(answers) && answers.length
+      ? answers
+          .filter((a: { question: string; answer: string }) => a.answer?.trim())
+          .map((a: { question: string; answer: string }) => `- ${a.question}\n  Answer: ${a.answer}`)
+          .join('\n')
+      : ''
+    prompt = `You are an expert business email writer. Write a reply to the following email thread with a ${toneDesc} tone. Use British English spelling.
+
+Email thread to reply to:
+${thread}
+${answersText ? `\nContext for the reply (use these to shape the content):\n${answersText}` : ''}
+
+Return ONLY valid JSON with exactly these fields:
+{
+  "subject": "Re: [appropriate subject line for the reply]",
+  "rewritten": "the full reply email body only — do not include the original email",
+  "shorter": "a concise version of the reply in 2-3 sentences maximum"
+}`
   } else {
     const { email } = body
     if (!email?.trim()) {
