@@ -11,9 +11,9 @@
   <DefaultLocale>en-GB</DefaultLocale>
   <DisplayName DefaultValue="Whizz Mail"/>
   <Description DefaultValue="AI-powered email writer — improve any email or write from scratch in seconds"/>
-  <IconUrl DefaultValue="https://localhost:3000/icon-80.png"/>
-  <HighResolutionIconUrl DefaultValue="https://localhost:3000/icon-80.png"/>
-  <SupportUrl DefaultValue="https://localhost:3000"/>
+  <IconUrl DefaultValue="https://whizz-mail.vercel.app/icon-80.png"/>
+  <HighResolutionIconUrl DefaultValue="https://whizz-mail.vercel.app/icon-80.png"/>
+  <SupportUrl DefaultValue="https://whizz-mail.vercel.app"/>
 
   <AppDomains>
     <AppDomain>localhost</AppDomain>
@@ -32,13 +32,13 @@
   <FormSettings>
     <Form xsi:type="ItemRead">
       <DesktopSettings>
-        <SourceLocation DefaultValue="https://localhost:3000/addin"/>
+        <SourceLocation DefaultValue="https://whizz-mail.vercel.app/addin"/>
         <RequestedHeight>220</RequestedHeight>
       </DesktopSettings>
     </Form>
     <Form xsi:type="ItemEdit">
       <DesktopSettings>
-        <SourceLocation DefaultValue="https://localhost:3000/addin"/>
+        <SourceLocation DefaultValue="https://whizz-mail.vercel.app/addin"/>
       </DesktopSettings>
     </Form>
   </FormSettings>
@@ -117,13 +117,13 @@
 
     <Resources>
       <bt:Images>
-        <bt:Image id="Icon.16" DefaultValue="https://localhost:3000/icon-16.png"/>
-        <bt:Image id="Icon.32" DefaultValue="https://localhost:3000/icon-32.png"/>
-        <bt:Image id="Icon.80" DefaultValue="https://localhost:3000/icon-80.png"/>
+        <bt:Image id="Icon.16" DefaultValue="https://whizz-mail.vercel.app/icon-16.png"/>
+        <bt:Image id="Icon.32" DefaultValue="https://whizz-mail.vercel.app/icon-32.png"/>
+        <bt:Image id="Icon.80" DefaultValue="https://whizz-mail.vercel.app/icon-80.png"/>
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="Commands.Url" DefaultValue="https://localhost:3000/addin/commands"/>
-        <bt:Url id="Taskpane.Url" DefaultValue="https://localhost:3000/addin"/>
+        <bt:Url id="Commands.Url" DefaultValue="https://whizz-mail.vercel.app/addin/commands"/>
+        <bt:Url id="Taskpane.Url" DefaultValue="https://whizz-mail.vercel.app/addin"/>
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="GroupLabel" DefaultValue="Whizz Mail"/>
