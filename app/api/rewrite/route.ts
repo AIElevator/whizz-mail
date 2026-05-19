@@ -115,7 +115,18 @@ Return ONLY valid JSON with exactly these fields:
   try {
     const jsonMatch = content.text.match(/\{[\s\S]*\}/)
     if (!jsonMatch) throw new Error('No JSON found')
-    return NextResponse.json(JSON.parse(jsonMatch[0]))
+    const result = JSON.parse(jsonMatch[0])
+
+    // Increment counter — fire and forget, never block the response
+    const kvUrl = process.env.UPSTASH_REDIS_REST_URL
+    const kvToken = process.env.UPSTASH_REDIS_REST_TOKEN
+    if (kvUrl && kvToken) {
+      fetch(`${kvUrl}/incr/email_count`, {
+        headers: { Authorization: `Bearer ${kvToken}` },
+      }).catch(() => {})
+    }
+
+    return NextResponse.json(result)
   } catch {
     return NextResponse.json({ error: 'Failed to parse AI response' }, { status: 500 })
   }
