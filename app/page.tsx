@@ -119,14 +119,14 @@ export default function Home() {
   const buttonLabel = mode === "reply" ? "Write my reply" : mode === "polish" ? "Polish my email" : "Write my email";
 
   return (
-    <div className="min-h-screen flex flex-col font-sans">
+    <div className="min-h-screen flex flex-col font-sans text-white">
       {/* Header */}
       <header className="border-b border-slate-800 px-6 py-4">
         <div className="max-w-6xl mx-auto flex items-center">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-base">⚡</div>
             <span className="font-bold text-lg tracking-tight">Whizz Mail</span>
-            <span className="hidden sm:inline text-slate-500 text-sm">— AI Email Writer</span>
+            <span className="hidden sm:inline text-slate-300 text-sm">— AI Email Writer</span>
           </div>
         </div>
       </header>
@@ -136,7 +136,7 @@ export default function Home() {
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">
             Stop agonising over work emails
           </h1>
-          <p className="text-slate-400 text-lg max-w-xl mx-auto">
+          <p className="text-slate-200 text-lg max-w-xl mx-auto">
             Reply to emails, polish drafts, or write from scratch — in seconds.
           </p>
         </div>
@@ -150,11 +150,11 @@ export default function Home() {
               className={`flex-1 px-4 py-3 rounded-xl border text-left transition-all ${
                 mode === m.id
                   ? "bg-indigo-600 border-indigo-500 text-white"
-                  : "bg-slate-900 border-slate-700 text-slate-300 hover:border-slate-500"
+                  : "bg-slate-900 border-slate-700 text-white hover:border-slate-500"
               }`}
             >
               <p className="font-semibold text-sm">{m.label}</p>
-              <p className={`text-xs mt-0.5 ${mode === m.id ? "text-indigo-200" : "text-slate-500"}`}>{m.desc}</p>
+              <p className={`text-xs mt-0.5 ${mode === m.id ? "text-indigo-200" : "text-slate-300"}`}>{m.desc}</p>
             </button>
           ))}
         </div>
@@ -168,7 +168,7 @@ export default function Home() {
               {mode === "reply" && replyStep === "paste" && (
                 <>
                   <div>
-                    <label className="block text-sm font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                    <label className="block text-sm font-semibold text-white uppercase tracking-wider mb-2">
                       Email or thread to reply to
                     </label>
                     <textarea
@@ -176,7 +176,7 @@ export default function Home() {
                       onChange={(e) => setThread(e.target.value)}
                       placeholder="Paste the email or conversation thread here…"
                       rows={10}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl p-4 text-slate-100 placeholder-slate-600 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm leading-relaxed"
+                      className="w-full bg-slate-950 border border-slate-700 rounded-xl p-4 text-white placeholder-slate-500 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm leading-relaxed"
                     />
                   </div>
                   <button
@@ -201,20 +201,20 @@ export default function Home() {
               {mode === "reply" && replyStep === "questions" && (
                 <>
                   <div className="bg-slate-800/60 rounded-xl border border-slate-700 px-4 py-3">
-                    <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">About this email</p>
-                    <p className="text-slate-200 text-sm leading-relaxed">{summary}</p>
+                    <p className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">About this email</p>
+                    <p className="text-white text-sm leading-relaxed">{summary}</p>
                   </div>
 
                   <div className="flex flex-col gap-4">
                     {questions.map((q) => (
                       <div key={q.id}>
-                        <label className="block text-sm font-medium text-slate-300 mb-1.5">{q.question}</label>
+                        <label className="block text-sm font-medium text-white mb-1.5">{q.question}</label>
                         <textarea
                           value={answers[q.id] ?? ""}
                           onChange={(e) => setAnswers((prev) => ({ ...prev, [q.id]: e.target.value }))}
                           placeholder="Your answer…"
                           rows={2}
-                          className="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-slate-100 placeholder-slate-600 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm leading-relaxed"
+                          className="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white placeholder-slate-500 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm leading-relaxed"
                         />
                       </div>
                     ))}
@@ -222,7 +222,7 @@ export default function Home() {
 
                   <button
                     onClick={() => { setReplyStep("paste"); setResult(null); }}
-                    className="text-slate-500 hover:text-slate-400 text-sm transition-colors text-left"
+                    className="text-slate-300 hover:text-white text-sm transition-colors text-left"
                   >
                     ← Change email
                   </button>
@@ -232,7 +232,7 @@ export default function Home() {
               {/* Polish mode */}
               {mode === "polish" && (
                 <div>
-                  <label className="block text-sm font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                  <label className="block text-sm font-semibold text-white uppercase tracking-wider mb-2">
                     Your draft or bullet points
                   </label>
                   <textarea
@@ -240,7 +240,7 @@ export default function Home() {
                     onChange={(e) => setDraft(e.target.value)}
                     placeholder={"e.g.\n- chase Sarah about invoice from last month\n- be polite but firm\n- ask for update by Friday"}
                     rows={10}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl p-4 text-slate-100 placeholder-slate-600 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm leading-relaxed"
+                    className="w-full bg-slate-950 border border-slate-700 rounded-xl p-4 text-white placeholder-slate-500 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm leading-relaxed"
                   />
                 </div>
               )}
@@ -249,7 +249,7 @@ export default function Home() {
               {mode === "generate" && (
                 <>
                   <div>
-                    <label className="block text-sm font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                    <label className="block text-sm font-semibold text-white uppercase tracking-wider mb-2">
                       What is this email about? <span className="text-red-400">*</span>
                     </label>
                     <textarea
@@ -257,31 +257,31 @@ export default function Home() {
                       onChange={(e) => setAbout(e.target.value)}
                       placeholder="e.g. Chase invoice from last month, ask for update by Friday"
                       rows={3}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl p-4 text-slate-100 placeholder-slate-600 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm leading-relaxed"
+                      className="w-full bg-slate-950 border border-slate-700 rounded-xl p-4 text-white placeholder-slate-500 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm leading-relaxed"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                      Who are you writing to? <span className="text-slate-600 normal-case font-normal">(optional)</span>
+                    <label className="block text-sm font-semibold text-white uppercase tracking-wider mb-2">
+                      Who are you writing to? <span className="text-slate-400 normal-case font-normal">(optional)</span>
                     </label>
                     <input
                       type="text"
                       value={recipient}
                       onChange={(e) => setRecipient(e.target.value)}
                       placeholder="e.g. My manager, a client, Sarah"
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                      Key points to include <span className="text-slate-600 normal-case font-normal">(optional)</span>
+                    <label className="block text-sm font-semibold text-white uppercase tracking-wider mb-2">
+                      Key points to include <span className="text-slate-400 normal-case font-normal">(optional)</span>
                     </label>
                     <textarea
                       value={points}
                       onChange={(e) => setPoints(e.target.value)}
                       placeholder={"e.g.\n- reference invoice #1042\n- deadline is end of week\n- keep it brief"}
                       rows={3}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl p-4 text-slate-100 placeholder-slate-600 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm leading-relaxed"
+                      className="w-full bg-slate-950 border border-slate-700 rounded-xl p-4 text-white placeholder-slate-500 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm leading-relaxed"
                     />
                   </div>
                 </>
@@ -289,7 +289,7 @@ export default function Home() {
 
               {/* Tone — hidden on reply step 1 */}
               {!(mode === "reply" && replyStep === "paste") && <div>
-                <p className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3">Tone</p>
+                <p className="text-sm font-semibold text-white uppercase tracking-wider mb-3">Tone</p>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {TONES.map((t) => (
                     <button
@@ -298,13 +298,13 @@ export default function Home() {
                       className={`flex items-start gap-2 px-3 py-2.5 rounded-xl text-left transition-all border ${
                         tone === t.id
                           ? "bg-indigo-600 border-indigo-500 text-white shadow-lg shadow-indigo-900/30"
-                          : "bg-slate-800 border-slate-700 text-slate-300 hover:border-slate-600 hover:text-white"
+                          : "bg-slate-800 border-slate-700 text-white hover:border-slate-500"
                       }`}
                     >
                       <span className="mt-0.5">{t.emoji}</span>
                       <span>
                         <span className="block text-sm font-medium">{t.label}</span>
-                        <span className={`block text-xs mt-0.5 ${tone === t.id ? "text-indigo-200" : "text-slate-500"}`}>{t.desc}</span>
+                        <span className={`block text-xs mt-0.5 ${tone === t.id ? "text-indigo-200" : "text-slate-300"}`}>{t.desc}</span>
                       </span>
                     </button>
                   ))}
@@ -312,15 +312,15 @@ export default function Home() {
               </div>}
 
               {!(mode === "reply" && replyStep === "paste") && <div>
-                <label className="block text-sm font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                  Anything else to consider? <span className="text-slate-600 normal-case font-normal">(optional)</span>
+                <label className="block text-sm font-semibold text-white uppercase tracking-wider mb-2">
+                  Anything else to consider? <span className="text-slate-400 normal-case font-normal">(optional)</span>
                 </label>
                 <textarea
                   value={context}
                   onChange={(e) => setContext(e.target.value)}
                   placeholder={"e.g. This is to my line manager / We have a relaxed working relationship / Keep it under three sentences"}
                   rows={2}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-slate-100 placeholder-slate-600 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm leading-relaxed"
+                  className="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white placeholder-slate-500 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm leading-relaxed"
                 />
               </div>}
 
@@ -359,17 +359,17 @@ export default function Home() {
               <>
                 <div className="bg-slate-900 rounded-2xl border border-slate-800 p-5">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-sm font-semibold text-slate-300 uppercase tracking-wider">
+                    <p className="text-sm font-semibold text-white uppercase tracking-wider">
                       Subject line
                     </p>
                     <button
                       onClick={() => copyText(result.subject, "subject")}
-                      className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors font-medium"
+                      className="text-xs text-indigo-400 hover:text-white transition-colors font-medium"
                     >
                       {copied === "subject" ? "Copied!" : "Copy"}
                     </button>
                   </div>
-                  <p className="text-slate-100 font-medium">{result.subject}</p>
+                  <p className="text-white font-medium">{result.subject}</p>
                 </div>
 
                 <div className="bg-slate-900 rounded-2xl border border-slate-800 p-5 flex-1">
@@ -380,7 +380,7 @@ export default function Home() {
                           key={v}
                           onClick={() => setActiveOutput(v)}
                           className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                            activeOutput === v ? "bg-slate-600 text-white" : "text-slate-400 hover:text-slate-200"
+                            activeOutput === v ? "bg-slate-600 text-white" : "text-slate-300 hover:text-white"
                           }`}
                         >
                           {v === "full" ? "Full email" : "Short version"}
@@ -389,19 +389,19 @@ export default function Home() {
                     </div>
                     <button
                       onClick={() => copyText(activeOutput === "full" ? result.rewritten : result.shorter, activeOutput)}
-                      className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors font-medium"
+                      className="text-xs text-indigo-400 hover:text-white transition-colors font-medium"
                     >
                       {copied === activeOutput ? "Copied!" : "Copy"}
                     </button>
                   </div>
 
-                  <div className="bg-slate-950 rounded-xl p-4 text-slate-200 text-sm leading-relaxed whitespace-pre-wrap min-h-[200px]">
+                  <div className="bg-slate-950 rounded-xl p-4 text-white text-sm leading-relaxed whitespace-pre-wrap min-h-[200px]">
                     {activeOutput === "full" ? result.rewritten : result.shorter}
                   </div>
 
                   <button
                     onClick={() => copyText(activeOutput === "full" ? result.rewritten : result.shorter, activeOutput)}
-                    className="mt-3 w-full py-2.5 rounded-xl border border-indigo-700 text-indigo-400 hover:bg-indigo-950 hover:text-indigo-300 transition-colors text-sm font-medium"
+                    className="mt-3 w-full py-2.5 rounded-xl border border-indigo-700 text-white hover:bg-indigo-950 transition-colors text-sm font-medium"
                   >
                     {copied === activeOutput ? "Copied to clipboard!" : "Copy to clipboard"}
                   </button>
@@ -411,8 +411,8 @@ export default function Home() {
               <div className="bg-slate-900 rounded-2xl border border-slate-800 p-8 flex-1 flex flex-col items-center justify-center text-center gap-4">
                 <div className="text-5xl">⚡</div>
                 <div>
-                  <p className="text-slate-300 font-medium mb-1">Your email will appear here</p>
-                  <p className="text-slate-500 text-sm max-w-xs mx-auto">
+                  <p className="text-white font-medium mb-1">Your email will appear here</p>
+                  <p className="text-slate-300 text-sm max-w-xs mx-auto">
                     {mode === "reply" && "Paste the email you received, add any notes, and hit the button."}
                     {mode === "polish" && "Paste your rough draft or bullet points and hit the button."}
                     {mode === "generate" && "Describe what you need and hit the button."}
@@ -420,7 +420,7 @@ export default function Home() {
                 </div>
                 <div className="flex flex-col gap-2 w-full max-w-xs mt-2">
                   {["Full polished email", "Short version (2 to 3 sentences)", "Suggested subject line"].map((item) => (
-                    <div key={item} className="text-sm text-slate-500 bg-slate-800/50 rounded-lg px-3 py-2">
+                    <div key={item} className="text-sm text-slate-300 bg-slate-800/50 rounded-lg px-3 py-2">
                       {item}
                     </div>
                   ))}
@@ -431,7 +431,7 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="border-t border-slate-800 px-6 py-5 text-center text-slate-600 text-sm">
+      <footer className="border-t border-slate-800 px-6 py-5 text-center text-slate-300 text-sm">
         Whizz Mail
       </footer>
     </div>
