@@ -45,6 +45,9 @@ export default function Home() {
   const [recipient, setRecipient] = useState("");
   const [points, setPoints]       = useState("");
 
+  // Additional context
+  const [context, setContext] = useState("");
+
   async function handleAnalyse() {
     if (!thread.trim()) { setError("Please paste the email you want to reply to."); return; }
     setAnalysing(true);
@@ -72,14 +75,14 @@ export default function Home() {
     if (mode === "reply") {
       if (!thread.trim()) { setError("Please paste the email you want to reply to."); return null; }
       const answersArray = questions.map((q) => ({ question: q.question, answer: answers[q.id] ?? "" }));
-      return { type: "reply", thread, answers: answersArray, tone };
+      return { type: "reply", thread, answers: answersArray, tone, context };
     }
     if (mode === "polish") {
       if (!draft.trim()) { setError("Please paste your draft email."); return null; }
-      return { type: "rewrite", email: draft, tone };
+      return { type: "rewrite", email: draft, tone, context };
     }
     if (!about.trim()) { setError("Please describe what the email is about."); return null; }
-    return { type: "generate", about, recipient, points, tone };
+    return { type: "generate", about, recipient, points, tone, context };
   }
 
   async function handleSubmit() {
@@ -303,6 +306,19 @@ export default function Home() {
                     </button>
                   ))}
                 </div>
+              </div>}
+
+              {!(mode === "reply" && replyStep === "paste") && <div>
+                <label className="block text-sm font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                  Anything else to consider? <span className="text-slate-600 normal-case font-normal">(optional)</span>
+                </label>
+                <textarea
+                  value={context}
+                  onChange={(e) => setContext(e.target.value)}
+                  placeholder={"e.g. This is to my line manager / We have a relaxed working relationship / Keep it under three sentences"}
+                  rows={2}
+                  className="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-slate-100 placeholder-slate-600 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm leading-relaxed"
+                />
               </div>}
 
               {!(mode === "reply" && replyStep === "paste") && <button

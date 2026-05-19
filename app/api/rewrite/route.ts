@@ -25,8 +25,9 @@ const WRITING_RULES = `Rules you must follow without exception:
 
 export async function POST(req: NextRequest) {
   const body = await req.json()
-  const { type = 'rewrite', tone } = body
+  const { type = 'rewrite', tone, context } = body
   const toneDesc = TONE_DESCRIPTIONS[tone] ?? TONE_DESCRIPTIONS.professional
+  const contextNote = context?.trim() ? `\nAdditional instructions from the user: ${context.trim()}` : ''
 
   let prompt: string
 
@@ -43,7 +44,7 @@ ${WRITING_RULES}
 Details:
 - What it's about: ${about}
 ${recipient?.trim() ? `- Recipient: ${recipient}` : ''}
-${points?.trim() ? `- Key points to include:\n${points}` : ''}
+${points?.trim() ? `- Key points to include:\n${points}` : ''}${contextNote}
 
 Return ONLY valid JSON with exactly these fields:
 {
@@ -69,7 +70,7 @@ ${WRITING_RULES}
 
 Email thread to reply to:
 ${thread}
-${answersText ? `\nContext for the reply (use these to shape the content):\n${answersText}` : ''}
+${answersText ? `\nContext for the reply (use these to shape the content):\n${answersText}` : ''}${contextNote}
 
 Return ONLY valid JSON with exactly these fields:
 {
@@ -90,7 +91,7 @@ ${WRITING_RULES}
 - Do not add a name or signature unless one is already present in the input
 
 Input:
-${email}
+${email}${contextNote}
 
 Return ONLY valid JSON with exactly these fields:
 {
