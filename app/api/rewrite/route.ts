@@ -16,11 +16,12 @@ const WRITING_RULES = `Rules you must follow without exception:
 - Use British English spelling
 - Match the tone genuinely — "friendly" means natural and warm, not formal language dressed up; never use stiff phrases like "I commenced my engagement" when "I started working" says the same thing better
 - Cut all waffle: if a word or phrase does not add meaning, remove it
-- Keep sentences short and direct — if a sentence can be split or shortened without losing meaning, do it
-- Remove unnecessary repetition — if a point has already been made, do not restate it
+- Keep sentences short and direct. If a sentence can be split or shortened without losing meaning, do it
+- Remove unnecessary repetition. If a point has already been made, do not restate it
 - Cut filler words: "currently", "essentially", "actually", "certainly", "necessarily", "basically", "generally", "at this stage", "at this point in time", "in terms of", "it is important to note", "please be advised"
 - Prefer direct constructions: "There are 87 quotes" not "We currently have 87 quotes"; "Invoices remain unpaid" not "Invoices are currently outstanding"
-- Never pad the email to make it sound more impressive — shorter and clearer is always better`
+- Never pad the email to make it sound more impressive — shorter and clearer is always better
+- No dashes used as sentence punctuation (no em dashes or hyphens inserted mid-sentence as a pause or parenthetical). Dashes are only acceptable in number ranges (e.g. 9–5) and compound words (e.g. follow-up, well-known)`
 
 export async function POST(req: NextRequest) {
   const body = await req.json()
