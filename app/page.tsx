@@ -1,9 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-
-const FREE_LIMIT = 3;
-const STORAGE_KEY = "whizzmail_count";
+import { useState } from "react";
 
 const TONES = [
   { id: "professional", label: "Professional", emoji: "💼" },
@@ -24,38 +21,29 @@ const MODES: { id: Mode; label: string; desc: string }[] = [
 ];
 
 export default function Home() {
-  const [mode, setMode]               = useState<Mode>("reply");
-  const [tone, setTone]               = useState("professional");
-  const [result, setResult]           = useState<Result | null>(null);
-  const [loading, setLoading]         = useState(false);
-  const [error, setError]             = useState("");
-  const [usageCount, setUsageCount]   = useState(0);
-  const [copied, setCopied]           = useState<"full" | "short" | "subject" | null>(null);
-  const [showUpgrade, setShowUpgrade] = useState(false);
+  const [mode, setMode]     = useState<Mode>("reply");
+  const [tone, setTone]     = useState("professional");
+  const [result, setResult] = useState<Result | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError]   = useState("");
+  const [copied, setCopied] = useState<"full" | "short" | "subject" | null>(null);
   const [activeOutput, setActiveOutput] = useState<"full" | "short">("full");
 
   // Polish mode
   const [draft, setDraft] = useState("");
 
   // Reply mode — two steps
-  const [thread, setThread]           = useState("");
-  const [replyStep, setReplyStep]     = useState<"paste" | "questions">("paste");
-  const [analysing, setAnalysing]     = useState(false);
-  const [summary, setSummary]         = useState("");
-  const [questions, setQuestions]     = useState<{ id: string; question: string }[]>([]);
-  const [answers, setAnswers]         = useState<Record<string, string>>({});
+  const [thread, setThread]       = useState("");
+  const [replyStep, setReplyStep] = useState<"paste" | "questions">("paste");
+  const [analysing, setAnalysing] = useState(false);
+  const [summary, setSummary]     = useState("");
+  const [questions, setQuestions] = useState<{ id: string; question: string }[]>([]);
+  const [answers, setAnswers]     = useState<Record<string, string>>({});
 
   // Generate mode
   const [about, setAbout]         = useState("");
   const [recipient, setRecipient] = useState("");
   const [points, setPoints]       = useState("");
-
-  useEffect(() => {
-    const stored = parseInt(localStorage.getItem(STORAGE_KEY) ?? "0", 10);
-    setUsageCount(stored);
-  }, []);
-
-  const remaining = Math.max(0, FREE_LIMIT - usageCount);
 
   async function handleAnalyse() {
     if (!thread.trim()) { setError("Please paste the email you want to reply to."); return; }
@@ -99,8 +87,6 @@ export default function Home() {
     const payload = buildPayload();
     if (!payload) return;
 
-    if (usageCount >= FREE_LIMIT) { setShowUpgrade(true); return; }
-
     setLoading(true);
     setResult(null);
 
@@ -114,9 +100,6 @@ export default function Home() {
       if (!res.ok) { setError(data.error ?? "Something went wrong. Please try again."); return; }
       setResult(data);
       setActiveOutput("full");
-      const newCount = usageCount + 1;
-      setUsageCount(newCount);
-      localStorage.setItem(STORAGE_KEY, String(newCount));
     } catch {
       setError("Network error. Please check your connection and try again.");
     } finally {
@@ -136,26 +119,11 @@ export default function Home() {
     <div className="min-h-screen flex flex-col font-sans">
       {/* Header */}
       <header className="border-b border-slate-800 px-6 py-4">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
+        <div className="max-w-6xl mx-auto flex items-center">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-base">⚡</div>
             <span className="font-bold text-lg tracking-tight">Whizz Mail</span>
             <span className="hidden sm:inline text-slate-500 text-sm">— AI Email Writer</span>
-          </div>
-          <div className="flex items-center gap-4">
-            {remaining > 0 ? (
-              <span className="text-sm text-slate-400">
-                <span className="text-indigo-400 font-semibold">{remaining}</span> free{" "}
-                {remaining === 1 ? "use" : "uses"} remaining
-              </span>
-            ) : (
-              <button
-                onClick={() => setShowUpgrade(true)}
-                className="text-sm bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-1.5 rounded-full transition-colors font-medium"
-              >
-                Upgrade — £4.99/mo
-              </button>
-            )}
           </div>
         </div>
       </header>
@@ -419,12 +387,6 @@ export default function Home() {
                     {copied === activeOutput ? "Copied to clipboard!" : "Copy to clipboard"}
                   </button>
                 </div>
-
-                {remaining <= 1 && remaining > 0 && (
-                  <div className="bg-amber-950/40 border border-amber-800/60 rounded-2xl p-4 text-sm text-amber-300">
-                    <strong>Last free use.</strong> Upgrade for unlimited emails — only £4.99/month.
-                  </div>
-                )}
               </>
             ) : (
               <div className="bg-slate-900 rounded-2xl border border-slate-800 p-8 flex-1 flex flex-col items-center justify-center text-center gap-4">
@@ -451,44 +413,8 @@ export default function Home() {
       </main>
 
       <footer className="border-t border-slate-800 px-6 py-5 text-center text-slate-600 text-sm">
-        Whizz Mail · {FREE_LIMIT} free emails, then £4.99/month for unlimited
+        Whizz Mail
       </footer>
-
-      {showUpgrade && (
-        <div
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50"
-          onClick={(e) => e.target === e.currentTarget && setShowUpgrade(false)}
-        >
-          <div className="bg-slate-900 border border-slate-700 rounded-2xl p-8 max-w-md w-full text-center shadow-2xl">
-            <h2 className="text-2xl font-bold mb-2">You have used your free emails</h2>
-            <p className="text-slate-400 mb-6 leading-relaxed">
-              Upgrade to Whizz Mail Pro for unlimited rewrites, replies and drafts.
-            </p>
-            <div className="bg-slate-800 rounded-xl p-5 mb-6 border border-slate-700">
-              <p className="text-3xl font-bold text-white mb-1">
-                £4.99<span className="text-lg font-normal text-slate-400">/month</span>
-              </p>
-              <p className="text-slate-400 text-sm">Cancel any time.</p>
-              <ul className="mt-4 text-sm text-slate-300 text-left space-y-2">
-                {["Unlimited emails", "Reply, polish and generate modes", "All 6 tones", "Subject line every time"].map((f) => (
-                  <li key={f} className="flex items-center gap-2">
-                    <span className="text-indigo-400">✓</span> {f}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <a
-              href="https://buy.stripe.com/YOUR_STRIPE_PAYMENT_LINK"
-              className="block w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-colors mb-3"
-            >
-              Get unlimited access
-            </a>
-            <button onClick={() => setShowUpgrade(false)} className="text-slate-500 hover:text-slate-400 text-sm transition-colors">
-              Maybe later
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
