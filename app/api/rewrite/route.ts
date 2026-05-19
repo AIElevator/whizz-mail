@@ -4,12 +4,12 @@ import { NextRequest, NextResponse } from 'next/server'
 const client = new Anthropic()
 
 const TONE_DESCRIPTIONS: Record<string, string> = {
-  professional: 'professional and polished, suitable for a corporate environment',
-  friendly: 'warm and friendly while remaining professional',
-  firm: 'firm, direct and assertive without being aggressive',
-  apologetic: 'apologetic, empathetic and conciliatory',
-  chasing: 'politely but clearly chasing for payment or an overdue response',
-  formal: 'formally written, appropriate for legal or HR correspondence',
+  professional: 'professional and polished — clear, business-like language suitable for everyday corporate correspondence',
+  friendly: 'warm and natural while remaining professional — conversational without being casual',
+  firm: 'firm, direct and assertive without being aggressive — states the position clearly and leaves no room for ambiguity',
+  apologetic: 'apologetic, empathetic and conciliatory — acknowledges the issue and seeks to resolve it',
+  chasing: 'politely but clearly chasing for payment or an overdue response — cordial but persistent',
+  formal: 'strictly formal — structured, precise and impersonal, appropriate for legal, official or highly sensitive correspondence where professional tone alone is insufficient',
 }
 
 const WRITING_RULES = `Rules you must follow without exception:

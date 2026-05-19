@@ -3,12 +3,12 @@
 import { useState } from "react";
 
 const TONES = [
-  { id: "professional", label: "Professional", emoji: "💼" },
-  { id: "friendly",     label: "Friendly",     emoji: "😊" },
-  { id: "firm",         label: "Firm & Direct", emoji: "✊" },
-  { id: "apologetic",   label: "Apologetic",    emoji: "🙏" },
-  { id: "chasing",      label: "Chasing",       emoji: "💸" },
-  { id: "formal",       label: "Formal / HR",   emoji: "📋" },
+  { id: "professional", label: "Professional", emoji: "💼", desc: "Polished and business-like" },
+  { id: "friendly",     label: "Friendly",     emoji: "😊", desc: "Warm, natural and approachable" },
+  { id: "firm",         label: "Firm & Direct", emoji: "✊", desc: "Assertive, no room for ambiguity" },
+  { id: "apologetic",   label: "Apologetic",    emoji: "🙏", desc: "Empathetic and conciliatory" },
+  { id: "chasing",      label: "Chasing",       emoji: "💸", desc: "Politely pressing for a response" },
+  { id: "formal",       label: "Formal",        emoji: "📋", desc: "Structured, precise and official" },
 ];
 
 type Mode = "polish" | "reply" | "generate";
@@ -295,14 +295,17 @@ export default function Home() {
                     <button
                       key={t.id}
                       onClick={() => setTone(t.id)}
-                      className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all border ${
+                      className={`flex items-start gap-2 px-3 py-2.5 rounded-xl text-left transition-all border ${
                         tone === t.id
                           ? "bg-indigo-600 border-indigo-500 text-white shadow-lg shadow-indigo-900/30"
                           : "bg-slate-800 border-slate-700 text-slate-300 hover:border-slate-600 hover:text-white"
                       }`}
                     >
-                      <span>{t.emoji}</span>
-                      <span>{t.label}</span>
+                      <span className="mt-0.5">{t.emoji}</span>
+                      <span>
+                        <span className="block text-sm font-medium">{t.label}</span>
+                        <span className={`block text-xs mt-0.5 ${tone === t.id ? "text-indigo-200" : "text-slate-500"}`}>{t.desc}</span>
+                      </span>
                     </button>
                   ))}
                 </div>
