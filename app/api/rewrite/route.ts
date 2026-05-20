@@ -1,7 +1,5 @@
-import Anthropic from '@anthropic-ai/sdk'
 import { NextRequest, NextResponse } from 'next/server'
-
-const client = new Anthropic()
+import { askAI } from '@/lib/ai'
 
 const TONE_DESCRIPTIONS: Record<string, string> = {
   professional: 'professional and polished — clear, business-like language suitable for everyday corporate correspondence',
@@ -101,36 +99,9 @@ Return ONLY valid JSON with exactly these fields:
 }`
   }
 
-  const makeRequest = () => client.messages.create({
-    model: 'claude-haiku-4-5-20251001',
-    max_tokens: 1024,
-    messages: [{ role: 'user', content: prompt }],
-  })
-
-  let message
   try {
-    message = await makeRequest()
-  } catch (err: unknown) {
-    const status = (err as { status?: number }).status
-    if (status === 529) {
-      await new Promise((r) => setTimeout(r, 3000))
-      try {
-        message = await makeRequest()
-      } catch {
-        return NextResponse.json({ error: 'The AI is very busy right now. Please try again in a few seconds.' }, { status: 503 })
-      }
-    } else {
-      return NextResponse.json({ error: 'Something went wrong. Please try again.' }, { status: 500 })
-    }
-  }
-
-  const content = message.content[0]
-  if (content.type !== 'text') {
-    return NextResponse.json({ error: 'Unexpected response from AI.' }, { status: 500 })
-  }
-
-  try {
-    const jsonMatch = content.text.match(/\{[\s\S]*\}/)
+    const text = await askAI(prompt, 1024)
+    const jsonMatch = text.match(/\{[\s\S]*\}/)
     if (!jsonMatch) throw new Error('No JSON found')
     const result = JSON.parse(jsonMatch[0])
 
@@ -144,7 +115,11 @@ Return ONLY valid JSON with exactly these fields:
     }
 
     return NextResponse.json(result)
-  } catch {
-    return NextResponse.json({ error: 'Failed to parse AI response' }, { status: 500 })
+  } catch (err: unknown) {
+    const status = (err as { status?: number }).status
+    if (status === 529 || status === 429) {
+      return NextResponse.json({ error: 'The AI is very busy right now. Please try again in a few seconds.' }, { status: 503 })
+    }
+    return NextResponse.json({ error: 'Something went wrong. Please try again.' }, { status: 500 })
   }
 }

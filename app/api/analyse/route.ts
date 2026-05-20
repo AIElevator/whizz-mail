@@ -1,7 +1,5 @@
-import Anthropic from '@anthropic-ai/sdk'
 import { NextRequest, NextResponse } from 'next/server'
-
-const client = new Anthropic()
+import { askAI } from '@/lib/ai'
 
 export async function POST(req: NextRequest) {
   const { thread } = await req.json()
@@ -32,39 +30,16 @@ Return ONLY valid JSON with exactly these fields:
   ]
 }`
 
-  const makeRequest = () => client.messages.create({
-    model: 'claude-haiku-4-5-20251001',
-    max_tokens: 512,
-    messages: [{ role: 'user', content: prompt }],
-  })
-
-  let message
   try {
-    message = await makeRequest()
-  } catch (err: unknown) {
-    const status = (err as { status?: number }).status
-    if (status === 529) {
-      await new Promise((r) => setTimeout(r, 3000))
-      try {
-        message = await makeRequest()
-      } catch {
-        return NextResponse.json({ error: 'The AI is very busy right now. Please try again in a few seconds.' }, { status: 503 })
-      }
-    } else {
-      return NextResponse.json({ error: 'Something went wrong. Please try again.' }, { status: 500 })
-    }
-  }
-
-  const content = message.content[0]
-  if (content.type !== 'text') {
-    return NextResponse.json({ error: 'Unexpected response from AI.' }, { status: 500 })
-  }
-
-  try {
-    const jsonMatch = content.text.match(/\{[\s\S]*\}/)
+    const text = await askAI(prompt, 512)
+    const jsonMatch = text.match(/\{[\s\S]*\}/)
     if (!jsonMatch) throw new Error('No JSON found')
     return NextResponse.json(JSON.parse(jsonMatch[0]))
-  } catch {
+  } catch (err: unknown) {
+    const status = (err as { status?: number }).status
+    if (status === 529 || status === 429) {
+      return NextResponse.json({ error: 'The AI is very busy right now. Please try again in a few seconds.' }, { status: 503 })
+    }
     return NextResponse.json({ error: 'Failed to analyse email.' }, { status: 500 })
   }
 }
