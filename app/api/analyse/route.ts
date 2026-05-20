@@ -32,15 +32,32 @@ Return ONLY valid JSON with exactly these fields:
   ]
 }`
 
-  const message = await client.messages.create({
+  const makeRequest = () => client.messages.create({
     model: 'claude-haiku-4-5-20251001',
     max_tokens: 512,
     messages: [{ role: 'user', content: prompt }],
   })
 
+  let message
+  try {
+    message = await makeRequest()
+  } catch (err: unknown) {
+    const status = (err as { status?: number }).status
+    if (status === 529) {
+      await new Promise((r) => setTimeout(r, 3000))
+      try {
+        message = await makeRequest()
+      } catch {
+        return NextResponse.json({ error: 'The AI is very busy right now. Please try again in a few seconds.' }, { status: 503 })
+      }
+    } else {
+      return NextResponse.json({ error: 'Something went wrong. Please try again.' }, { status: 500 })
+    }
+  }
+
   const content = message.content[0]
   if (content.type !== 'text') {
-    return NextResponse.json({ error: 'Unexpected response from AI' }, { status: 500 })
+    return NextResponse.json({ error: 'Unexpected response from AI.' }, { status: 500 })
   }
 
   try {
